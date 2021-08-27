@@ -8,13 +8,17 @@ namespace Zork
         static void Main(string[] args)
         //--------------------------//
         {
+            //Variables
+
             Console.WriteLine("Welcome to Zork!");
 
-            string.inputString = Console.ReadLine();
+            string inputString = Console.ReadLine(); //Also establishes inputString variable
+
+
             inputString = inputString.ToUpper();
             if (inputString == "QUIT")
             {
-                Console.WriteLine("Thank you for playing.")
+                Console.WriteLine("Thank you for playing.");
 
             }
             else if (inputString == "LOOK")
@@ -24,7 +28,7 @@ namespace Zork
             }
             else
             {
-                Console.WriteLine("Unrecognized command.")
+                Console.WriteLine("Unrecognized command.");
 
             }
 
