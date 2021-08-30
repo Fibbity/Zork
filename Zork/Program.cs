@@ -2,14 +2,24 @@
 
 namespace Zork
 {
+
+    enum Commands
+    {
+        QUIT,
+        LOOK,
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST,
+        UNKNOWN
+    }
+
     class Program
     {
         //--------------------------//
         static void Main(string[] args)
         //--------------------------//
         {
-            //Variables
-
             Console.WriteLine("Welcome to Zork!");
 
             string inputString = Console.ReadLine(); //Also establishes inputString variable
@@ -34,6 +44,10 @@ namespace Zork
 
 
         }//END Main
+
+        //--------------------------//
+        private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
+        //--------------------------//
 
 
     }//END Program
