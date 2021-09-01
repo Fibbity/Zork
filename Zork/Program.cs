@@ -5,20 +5,8 @@ namespace Zork
 
     class Program
     {
-        private static readonly string[,] rooms = {
-            { "Rocky Trail", "South of House", "Canyon View" },
-            { "Forest", "West of House", "Behind House" },
-            { "Dense Woods", "North of House", "Clearing" }
-        }; //left is west, right is east, up is north, down is south
-
-        private static (int row, int column) location = (1, 1);
-        private static string currentRoom
-        {
-            get
-            {
-                return rooms[location.row, location.column];
-            }
-        }
+        private static string[] rooms = new string[5] { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" }; //left is west, right is east
+        private static int currentRoom = 1;
         private static int lastRoom = rooms.Length - 1;
         private static bool isMoving;
 
@@ -51,7 +39,7 @@ namespace Zork
 
                         if (isMoving == true)
                         {
-                            currentRoom;//TODO change later
+                            currentRoom++;//TODO change later
                             outputString = $"You moved {command}.";
                             Console.WriteLine(rooms[currentRoom]);
                         }
@@ -183,10 +171,7 @@ namespace Zork
                     break;
 
                 default:
-                    System.Diagnostics.Debug.WriteLine("Not a direction!");
-
-                    isMoving = false;
-
+                    Console.WriteLine("That's not right.");
                     break;
             }
 
