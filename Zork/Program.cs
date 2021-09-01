@@ -7,6 +7,8 @@ namespace Zork
     {
         private static string[] rooms = new string[5] { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" }; //left is west, right is east
         private static int currentRoom = 1;
+        private static int lastRoom = rooms.Length - 1;
+        private static bool isMoving;
 
 
         //--------------------------//
@@ -32,41 +34,72 @@ namespace Zork
                         break;
 
                     case Commands.NORTH:
-                    case Commands.SOUTH:
-                        outputString = "The way is shut!";
-                        
-                        break;
 
-                    case Commands.EAST:
-                        outputString = $"You moved {command}.";
-                        currentRoom ++;
-                        Console.WriteLine(rooms[currentRoom]);
+                        Move(command);
 
-                        if (currentRoom < 6)
+                        if (isMoving == true)
                         {
-                            currentRoom++;
+                            currentRoom++;//TODO change later
+                            outputString = $"You moved {command}.";
+                            Console.WriteLine(rooms[currentRoom]);
                         }
                         else
                         {
                             outputString = "The way is shut!";
-                            currentRoom = 5;
+                        }
+
+                        break;
+
+                    case Commands.SOUTH:
+
+                        Move(command);
+
+                        if (isMoving == true)
+                        {
+                            currentRoom--;//TODO change later
+
+                            outputString = $"You moved {command}.";
+                            Console.WriteLine(rooms[currentRoom]);
+                        }
+                        else
+                        {
+                            outputString = "The way is shut!";
+                        }
+
+                        break;
+                        
+                    case Commands.EAST:
+
+                        Move(command);
+
+                        if (isMoving == true)
+                        {
+                            currentRoom++;
+
+                            outputString = $"You moved {command}.";
+                            Console.WriteLine(rooms[currentRoom]);
+                        }
+                        else
+                        {
+                            outputString = "The way is shut!";
                         }
 
                         break;
 
                     case Commands.WEST:
-                        outputString = $"You moved {command}.";
-                        currentRoom --;
-                        Console.WriteLine(rooms[currentRoom]);
 
-                        if (currentRoom > -1)
+                        Move(command);
+
+                        if (isMoving == true)
                         {
-                            currentRoom++;
+                            currentRoom--;
+
+                            outputString = $"You moved {command}.";
+                            Console.WriteLine(rooms[currentRoom]);
                         }
                         else
                         {
                             outputString = "The way is shut!";
-                            currentRoom = 0;
                         }
 
                         break;
@@ -94,9 +127,54 @@ namespace Zork
         //--------------------------//
 
         //--------------------------//
-        private void Move()
+        private static void Move(Commands inputCommand)
         //--------------------------//
         {
+            switch (inputCommand)
+            {
+                case Commands.NORTH:
+
+                    isMoving = false; //TODO Refactor
+
+                    break;
+
+                case Commands.SOUTH:
+
+                    isMoving = false; //TODO Refactor
+
+                    break;
+
+                case Commands.EAST:
+
+                    if(currentRoom < lastRoom)
+                    {
+                        isMoving = true;
+                    }
+                    else
+                    {
+                        isMoving = false;
+                    }
+
+                    break;
+
+                case Commands.WEST:
+
+                    if (currentRoom > 0)
+                    {
+                        isMoving = true;
+                    }
+                    else
+                    {
+                        isMoving = false;
+                    }
+
+                    break;
+
+                default:
+                    Console.WriteLine("That's not right.");
+                    break;
+            }
+
 
         }//END Move
 
