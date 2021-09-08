@@ -5,9 +5,12 @@ namespace Zork
 
     class Program
     {
-        private static string[] rooms = new string[5] { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" }; //left is west, right is east
-        private static int currentRoom = 1;
-        private static int lastRoom = rooms.Length - 1;
+        private static readonly string[,] rooms = {
+            { "Rocky Trail", "South of House", "Canyon View" },
+            { "Forest", "West of House", "Behind House" },
+            { "Dense Woods", "North of House", "Clearing" }
+        }; //left is south, right is north, down is west, up is east
+        private static (int row, int column) currentLocation = (1, 1);
         private static bool isMoving;
 
 
@@ -15,13 +18,14 @@ namespace Zork
         static void Main(string[] args)
         //--------------------------//
         {
+
             Console.WriteLine("Welcome to Zork!");
 
             Commands command = Commands.UNKNOWN;
 
             while (command != Commands.QUIT)
             {
-                Console.Write("> ");
+                Console.Write($"{ rooms[currentLocation.row, currentLocation.column]}\n> ");
                 command = ToCommand(Console.ReadLine().Trim());
 
                 string outputString;
@@ -34,73 +38,22 @@ namespace Zork
                         break;
 
                     case Commands.NORTH:
-
-                        Move(command);
-
-                        if (isMoving == true)
-                        {
-                            currentRoom++;//TODO change later
-                            outputString = $"You moved {command}.";
-                            Console.WriteLine(rooms[currentRoom]);
-                        }
-                        else
-                        {
-                            outputString = "The way is shut!";
-                        }
-
-                        break;
-
-                    case Commands.SOUTH:
-
-                        Move(command);
-
-                        if (isMoving == true)
-                        {
-                            currentRoom--;//TODO change later
-
-                            outputString = $"You moved {command}.";
-                            Console.WriteLine(rooms[currentRoom]);
-                        }
-                        else
-                        {
-                            outputString = "The way is shut!";
-                        }
-
-                        break;
-                        
+                    case Commands.SOUTH:                        
                     case Commands.EAST:
-
-                        Move(command);
-
-                        if (isMoving == true)
-                        {
-                            currentRoom++;
-
-                            outputString = $"You moved {command}.";
-                            Console.WriteLine(rooms[currentRoom]);
-                        }
-                        else
-                        {
-                            outputString = "The way is shut!";
-                        }
-
-                        break;
-
                     case Commands.WEST:
 
                         Move(command);
 
                         if (isMoving == true)
                         {
-                            currentRoom--;
-
                             outputString = $"You moved {command}.";
-                            Console.WriteLine(rooms[currentRoom]);
                         }
                         else
                         {
                             outputString = "The way is shut!";
+
                         }
+                        
 
                         break;
 
@@ -134,21 +87,38 @@ namespace Zork
             {
                 case Commands.NORTH:
 
-                    isMoving = false; //TODO Refactor
+                    if (currentLocation.row < rooms.GetLength(0) - 1)
+                    {
+                        isMoving = true;
+                        currentLocation.row++;
+                    }
+                    else
+                    {
+                        isMoving = false;
+                    }
 
                     break;
 
                 case Commands.SOUTH:
 
-                    isMoving = false; //TODO Refactor
+                    if (currentLocation.row > 0)
+                    {
+                        isMoving = true;
+                        currentLocation.row--;
+                    }
+                    else
+                    {
+                        isMoving = false;
+                    }
 
                     break;
 
                 case Commands.EAST:
 
-                    if(currentRoom < lastRoom)
+                    if (currentLocation.column < rooms.GetLength(1) - 1)
                     {
                         isMoving = true;
+                        currentLocation.column++;
                     }
                     else
                     {
@@ -159,9 +129,10 @@ namespace Zork
 
                 case Commands.WEST:
 
-                    if (currentRoom > 0)
+                    if (currentLocation.column > 0)
                     {
                         isMoving = true;
+                        currentLocation.column--;
                     }
                     else
                     {
@@ -171,7 +142,8 @@ namespace Zork
                     break;
 
                 default:
-                    Console.WriteLine("That's not right.");
+                    isMoving = false;
+
                     break;
             }
 
