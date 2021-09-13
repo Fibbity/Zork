@@ -1,18 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Zork
 {
 
+    //--------------------------//
+    public static class Assert
+    //--------------------------//
+    {
+        [Conditional("DEBUG")]
+
+        //--------------------------//
+        public static void IsTrue(bool expression, string message = null)
+        //--------------------------//
+        {
+            if (expression == false)
+            {
+                throw new Exception(message);
+            }
+
+        }//END IsTrue
+
+    }//END Assert
+
+    //--------------------------//
     class Program
+    //--------------------------//
     {
         private static readonly string[,] rooms = {
             { "Rocky Trail", "South of House", "Canyon View" },
             { "Forest", "West of House", "Behind House" },
             { "Dense Woods", "North of House", "Clearing" }
         }; //left is south, right is north, down is west, up is east
-        private static (int row, int column) currentLocation = (1, 1);
-        private static bool isMoving;
 
+        private static (int row, int column) currentLocation = (1, 1);
+
+        private static string currentRoom
+        {
+            get
+            {
+                return rooms[currentLocation.row, currentLocation.column];
+            }
+        }
+
+        private static bool IsDirection(Commands command) => Directions.Contains(command);
+
+        private static readonly List<Commands> Directions = new List<Commands>
+        {
+            Commands.NORTH,
+            Commands.SOUTH,
+            Commands.EAST,
+            Commands.WEST
+        };
+
+        #region Main
 
         //--------------------------//
         static void Main(string[] args)
@@ -25,7 +67,8 @@ namespace Zork
 
             while (command != Commands.QUIT)
             {
-                Console.Write($"{ rooms[currentLocation.row, currentLocation.column]}\n> ");
+                Console.WriteLine(currentRoom);
+                Console.Write("> ");
                 command = ToCommand(Console.ReadLine().Trim());
 
                 string outputString;
@@ -42,20 +85,16 @@ namespace Zork
                     case Commands.EAST:
                     case Commands.WEST:
 
-                        Move(command);
+                        outputString = $"You moved {command}.";
 
-                        if (isMoving == true)
-                        {
-                            outputString = $"You moved {command}.";
-                        }
-                        else
+                        if (Move(command) == false)
                         {
                             outputString = "The way is shut!";
 
                         }
-                        
 
                         break;
+
 
                     case Commands.QUIT:
                         outputString = "Thank you for playing!";
@@ -64,7 +103,6 @@ namespace Zork
 
                     default:
                         outputString = "Unrecognized Command";
-
                         break;
 
                 }
@@ -75,80 +113,48 @@ namespace Zork
 
         }//END Main
 
+        #endregion Main
+
         //--------------------------//
         private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
         //--------------------------//
 
         //--------------------------//
-        private static void Move(Commands inputCommand)
+        private static bool Move(Commands command)
         //--------------------------//
         {
-            switch (inputCommand)
+            Assert.IsTrue(IsDirection(command), "Invalid direction.");
+
+            bool isValidMove = true;
+
+            switch (command)
             {
-                case Commands.NORTH:
-
-                    if (currentLocation.row < rooms.GetLength(0) - 1)
-                    {
-                        isMoving = true;
-                        currentLocation.row++;
-                    }
-                    else
-                    {
-                        isMoving = false;
-                    }
-
+                case Commands.NORTH when currentLocation.row < rooms.GetLength(0) - 1:
+                    currentLocation.row++;
                     break;
 
-                case Commands.SOUTH:
-
-                    if (currentLocation.row > 0)
-                    {
-                        isMoving = true;
-                        currentLocation.row--;
-                    }
-                    else
-                    {
-                        isMoving = false;
-                    }
-
+                case Commands.SOUTH when currentLocation.row > 0:
+                    currentLocation.row--;
                     break;
 
-                case Commands.EAST:
-
-                    if (currentLocation.column < rooms.GetLength(1) - 1)
-                    {
-                        isMoving = true;
-                        currentLocation.column++;
-                    }
-                    else
-                    {
-                        isMoving = false;
-                    }
-
+                case Commands.EAST when currentLocation.column < rooms.GetLength(1) - 1:
+                    currentLocation.column++;
                     break;
 
-                case Commands.WEST:
-
-                    if (currentLocation.column > 0)
-                    {
-                        isMoving = true;
-                        currentLocation.column--;
-                    }
-                    else
-                    {
-                        isMoving = false;
-                    }
-
+                case Commands.WEST when currentLocation.column > 0:
+                    currentLocation.column--;
                     break;
 
                 default:
-                    isMoving = false;
+                    isValidMove = false;
 
                     break;
             }
 
+            return isValidMove;
 
         }//END Move
+
 
     }//END Program
 
