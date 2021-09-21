@@ -29,9 +29,9 @@ namespace Zork
     //--------------------------//
     {
         private static readonly Room[,] rooms = {
-            { new Room("Rocky Trail"), new Room("South of House"), new Room("Canyon View") },
-            { new Room("Forest"), new Room("West of House"), new Room("Behind House") },
-            { new Room("Dense Woods"), new Room("North of House"), new Room("Clearing") }
+            { new Room("Rocky Trail"),  new Room("South of House"), new Room("Canyon View") },
+            { new Room("Forest"),       new Room("West of House"),  new Room("Behind House") },
+            { new Room("Dense Woods"),  new Room("North of House"), new Room("Clearing") }
         }; //left is south, right is north, down is west, up is east
 
         private static (int row, int column) currentLocation = (1, 1);
@@ -62,6 +62,8 @@ namespace Zork
         {
             InitializeRoomDescriptions();
 
+            Room previousRoom = null;
+
             Console.WriteLine("Welcome to Zork!");
 
             Commands command = Commands.UNKNOWN;
@@ -69,6 +71,13 @@ namespace Zork
             while (command != Commands.QUIT)
             {
                 Console.WriteLine(currentRoom);
+
+                if (previousRoom != currentRoom)
+                {
+                    Console.WriteLine(currentRoom.roomDescription);
+                    previousRoom = currentRoom;
+                }
+
                 Console.Write("> ");
                 command = ToCommand(Console.ReadLine().Trim());
 
@@ -155,17 +164,21 @@ namespace Zork
         private static void InitializeRoomDescriptions()
         //--------------------------//
         {
-            rooms[0, 0].roomDescription = "You are on a rock-strewn trail";                                                                             //Rocky Trail
-            rooms[0, 1].roomDescription = "You are facing the south side of a white house. There is no door here, and all the windows are barred.";     //South of House
-            rooms[0, 2].roomDescription = "You are at the top of the Great Canyon on its south wall.";                                                  //Canyon View
+            var roomMap = new Dictionary<string, Room>();
+            foreach (Room room in rooms)
+            {
+                roomMap[room.roomName] = room;
+            }
 
-            rooms[1, 0].roomDescription = "This is a forest, with trees in all directions around you.";                                                 //Forest
-            rooms[1, 1].roomDescription = "This is an open field west of a white house, with a boarded front door.";                                    //West of House
-            rooms[1, 2].roomDescription = "You are behind the white house. In one corner of the house there is a small window which is slightly ajar."; //Behind House
-
-            rooms[2, 0].roomDescription = "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.";        //Dense Woods
-            rooms[2, 1].roomDescription = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";     //North of House
-            rooms[2, 2].roomDescription = "You are in a clearing, with a forest surrounding you on the west and south.";                                //Clearing
+          roomMap["Rocky Trail"].roomDescription = "You are on a rock-strewn trail";
+          roomMap["South of House"].roomDescription = "You are facing the south side of a white house. There is no door here, and all the windows are barred.";
+          roomMap["Canyon View"].roomDescription = "You are at the top of the Great Canyon on its south wall.";
+          roomMap["Forest"].roomDescription = "This is a forest, with trees in all directions around you.";
+          roomMap["West of House"].roomDescription = "This is an open field west of a white house, with a boarded front door.";
+          roomMap["Behind House"].roomDescription = "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.";
+          roomMap["Dense Woods"].roomDescription = "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.";
+          roomMap["North of House"].roomDescription = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";
+          roomMap["Clearing"].roomDescription = "You are in a clearing, with a forest surrounding you on the west and south.";
 
 
         }//END InitializeRoomDescriptions
