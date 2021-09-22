@@ -1,6 +1,7 @@
-﻿using Zork;
+﻿using System;
 using System.Diagnostics;
-using System;
+using Zork;
+
 
 //--------------------------//
 public static class Assert
@@ -18,4 +19,5 @@ public static class Assert
         }
 
     }//END IsTrue
-}
+
+}//END Assert
