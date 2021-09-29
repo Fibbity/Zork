@@ -1,9 +1,0 @@
-Rocky Trail##ROCK
-South of House##BACKHOUSE
-Canyon View##BIG HOLE
-Forest##TREE
-West of House##STARTHOUSE
-Behind House##REALBACKHOUSE
-Dense Woods##MORETREE
-North of House##NOUSE
-Clearing##NOTREE
