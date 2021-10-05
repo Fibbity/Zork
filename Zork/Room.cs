@@ -1,22 +1,55 @@
-﻿namespace Zork
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+
+namespace Zork
 {
-    public class Room
+    public class Room : IEquatable<Room>
     {
-        public string roomName { get;  }
+        [JsonProperty(Order = 1)]
+        public string Name { get; private set; }
 
-        public string roomDescription { get; set; }
+        [JsonProperty(Order = 2)]
+        public string Description { get; private set; }
 
-        //--------------------------//
-        public Room(string name, string description = "")
-        //--------------------------//
+        [JsonProperty(PropertyName = "Neighbors", Order = 3)]
+        private Dictionary<Directions, string> NeighborNames { get; set; }
+
+        [JsonIgnore]
+        public IReadOnlyDictionary<Directions, Room> Neighbors { get; private set; }
+
+        public static bool operator ==(Room lhs, Room rhs)
         {
-            roomName = name;
-            roomDescription = description;
+            if (ReferenceEquals(lhs, rhs))
+            {
+                return true;
+            }
 
-        }//END Room
+            if (lhs is null || rhs is null)
+            {
+                return false;
+            }
 
-        public override string ToString() => roomName;
-        
+            return lhs.Name == rhs.Name;
+        }
+
+        public static bool operator !=(Room lhs, Room rhs) => !(lhs == rhs);
+
+        public override bool Equals(object obj) => obj is Room room ? this == room : false;
+
+        public bool Equals(Room other) => this == other;
+
+        public override string ToString() => Name;
+
+        public override int GetHashCode() => Name.GetHashCode();
+
+        public void UpdateNeighbors(World world) => Neighbors = (from entry in NeighborNames
+                                                                 let room = world.RoomsByName.GetValueOrDefault(entry.Value)
+                                                                 where room != null
+                                                                 select (Direction: entry.Key, Room: room))
+                                                                 .ToDictionary(pair => pair.Direction, pair => pair.Room);
 
     }//END Room
-}
+
+}//END Zork
