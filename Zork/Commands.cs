@@ -8,7 +8,9 @@
         EAST,
         SOUTH,
         WEST,
-        UNKNOWN
+        UNKNOWN,
+        SCORE,
+        REWARD
     }
 
 }//END Commands
