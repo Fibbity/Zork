@@ -73,6 +73,7 @@ namespace Zork
                         break;
 
                     case Commands.SCORE:
+                        Player.PlayerMoved();
                         Console.WriteLine($"Your score is {Player.score} in {Player.moves} moves.");
                         break;
 
