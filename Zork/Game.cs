@@ -77,7 +77,6 @@ namespace Zork
                         break;
 
                     default:
-                        Player.PlayerMoved();
                         Console.WriteLine("Unrecognized Command");
                         break;
                 }
