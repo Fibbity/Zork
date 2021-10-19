@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8BBF7601-EF89-4FF6-A481-66531EADE488}</ProjectGuid>
+    <ProjectGuid>{CA98754F-3819-433D-A440-150FA6D0EA4A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Zork.Builder</RootNamespace>
     <AssemblyName>Zork.Builder</AssemblyName>
@@ -54,6 +54,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
