@@ -84,10 +84,6 @@
       <Project>{d9e06bc6-6680-4be8-884f-95dbc8d651d3}</Project>
       <Name>Zork.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zork\Zork.csproj">
-      <Project>{a6a6d726-a90b-4cfe-b562-8467ae5df910}</Project>
-      <Name>Zork</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
