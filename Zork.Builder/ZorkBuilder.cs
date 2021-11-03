@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Zork.Builder
 {
-    public partial class Form1 : Form
+    public partial class ZorkBuilder : Form
     {
-        public Form1()
+        public ZorkBuilder()
         {
             InitializeComponent();
         }
@@ -28,6 +28,21 @@ namespace Zork.Builder
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void currentRoomlabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
 
         }
