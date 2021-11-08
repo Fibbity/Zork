@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Runtime.Serialization;
+using Zork.Common;
 
 namespace Zork
 {
@@ -15,6 +16,8 @@ namespace Zork
 
         [JsonIgnore]
         private bool IsRunning { get; set; }
+
+        public IOutputService Output { get; set; }
 
         public Game(World world, Player player)
         {
@@ -30,16 +33,16 @@ namespace Zork
             Room previousRoom = null;
             while (IsRunning)
             {
-                Console.WriteLine(Player.Location);
+                Output.WriteLine(Player.Location);
                 if (previousRoom != Player.Location)
                 {
-                    Console.WriteLine(Player.Location.Description);
+                    Output.WriteLine(Player.Location.Description);
                     previousRoom = Player.Location;
                 }
 
 
-                Console.Write("\n> ");
-                Commands command = ToCommand(Console.ReadLine().Trim());
+                Output.Write("\n> ");
+                Commands command = ToCommand(Console.ReadLine().Trim());//Change?
 
                 switch (command)
                 {
@@ -49,7 +52,7 @@ namespace Zork
 
                     case Commands.LOOK:
                         Player.PlayerMoved();
-                        Console.WriteLine(Player.Location.Description);
+                        Output.WriteLine(Player.Location.Description);
                         break;
 
                     case Commands.NORTH:
@@ -62,23 +65,23 @@ namespace Zork
                         Directions direction = (Directions)command;
                         if (Player.Move(direction) == false)
                         {
-                            Console.WriteLine("The way is shut!");
+                            Output.WriteLine("The way is shut!");
                         }
                         break;
 
                     case Commands.REWARD:
                         Player.PlayerMoved();
                         Player.score += 1;
-                        Console.WriteLine("WOOOOO! Score increased!");
+                        Output.WriteLine("WOOOOO! Score increased!");
                         break;
 
                     case Commands.SCORE:
                         Player.PlayerMoved();
-                        Console.WriteLine($"Your score is {Player.score} in {Player.moves} moves.");
+                        Output.WriteLine($"Your score is {Player.score} in {Player.moves} moves.");
                         break;
 
                     default:
-                        Console.WriteLine("Unrecognized Command");
+                        Output.WriteLine("Unrecognized Command");
                         break;
                 }
             }
@@ -86,8 +89,11 @@ namespace Zork
 
         public static Game Load(string filename)
         {
+
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
             game.Player = game.World.SpawnPlayer();
+            game.Output = output;
+
             return game;
         }
 
