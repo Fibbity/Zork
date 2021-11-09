@@ -16,7 +16,7 @@ namespace Zork
             string gameFilename = args.Length > 0 ? args[(int)CommandLineArguments.GameFilename] : defaultGameFilename;
 
             ConsoleOutputService output = new ConsoleOutputService();
-            Game game = Game.Load(gameFilename);
+            Game game = Game.Load(gameFilename, output);
             game.Run();
 
         }//END Main

@@ -87,7 +87,7 @@ namespace Zork
             }
         }
 
-        public static Game Load(string filename)
+        public static Game Load(string filename, IOutputService output)
         {
 
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
